@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  nginx:
+    build: requirements/nginx
+    container_name: nginx
+    ports:
+      - "443:443"
+    volumes:
+      - wp_data:/var/www/wordpress
+    networks:
+      - inception
+    restart: unless-stopped
+
+  mariadb:
+    build: requirements/mariadb
+    container_name: mariadb
+    networks:
+      - inception
+    volumes:
+      - db_data:/var/lib/mysql
+    env_file:
+     - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    restart: unless-stopped
+
+  wordpress:
+    depends_on:
+      - mariadb
+    build: requirements/wordpress
+    container_name: wordpress
+    volumes:
+      - wp_data:/var/www/wordpress
+    env_file:
+      - .env
+    environment:
+    WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: ${DB_DATABASE}
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}      
+      WORDPRESS_ADMIN_USER: ${WP_ROOT_USER}
+      WORDPRESS_ADMIN_PASSWORD: ${WP_ROOT_PASSWORD}
+      WORDPRESS_ADMIN_EMAIL: ${WP_ROOT_EMAIL}
+    networks:
+      - inception
+    restart: unless-stopped
+
+networks:
+  inception:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/bekinci-/sgoinfre/data/mariadb
+      o:bind
+  wp_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/bekinci-/sgoinfre/data/wordpress
+      o:bind
