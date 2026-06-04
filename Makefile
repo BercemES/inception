@@ -9,8 +9,7 @@ YELLOW			= \033[0;33m
 BLUE			= \033[0;34m
 
 all:
-	@mkdir -p /home/bekinci-/data/mariadb
-	@mkdir -p /home/bekinci-/data/wordpress
+	@bash srcs/requirements/tools/make_dir.sh
 	@docker compose -f $(COMPOSE_FILE) up --build -d
 	@echo "$(GREEN)Inception started..✅$(RESET)"
 
