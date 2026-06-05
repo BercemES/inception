@@ -9,16 +9,16 @@ RUN apt-get update && apt-get install -y \
 
 COPY ./conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
 
-RUN mkdir -p /run/php /var/www/html
+RUN mkdir -p /run/php /var/www/wordpress
 
 RUN curl -o /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz && \
-    tar -xvf /tmp/wordpress.tar.gz -C /var/www/html --strip-components=1 && \
+    tar -xvf /tmp/wordpress.tar.gz -C /var/www/wordpress --strip-components=1 && \
     rm /tmp/wordpress.tar.gz
 
 
-RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www/wordpress
 
-WORKDIR /var/www/html
+WORKDIR /var/www/wordpress
 
 COPY ./tools/auto_config.sh /usr/local/bin/wp_setup.sh
 RUN chmod +x /usr/local/bin/wp_setup.sh

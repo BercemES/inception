@@ -58,13 +58,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/bekinci-/sgoinfre/data/mariadb
+      device: /home/bekinci-/data/mariadb
       o: "bind"
   wp_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/bekinci-/sgoinfre/data/wordpress
+      device: /home/bekinci-/data/wordpress
       o: "bind"
 secrets:
   db_password:

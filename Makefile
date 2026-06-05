@@ -9,7 +9,7 @@ YELLOW			= \033[0;33m
 BLUE			= \033[0;34m
 
 all:
-	@bash srcs/requirements/tools/make_dir.sh
+	@bash srcs/requirements/tools/makedir.sh
 	@docker compose -f $(COMPOSE_FILE) up --build -d
 	@echo "$(GREEN)Inception started..✅$(RESET)"
 

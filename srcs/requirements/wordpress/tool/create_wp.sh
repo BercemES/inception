@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Waiting Database to ready..."
-until mariadb-admin ping -h mariadb -u $MYSQL_USER --password=$MYSQL_PASSWORD --silent; do
+until mariadb-admin ping -h mariadb -u $DB_USER --password=$DB_PASSWORD --silent; do
     sleep 2
 done
 echo "Database ready!"
@@ -16,9 +16,9 @@ if [ ! -f "wp-config.php" ]; then
     
     wp core install --url="$DOMAIN_NAME" \
                     --title="Inception Project" \
-                    --admin_user="$WP_ADMIN_USER" \
-                    --admin_password="$WP_ADMIN_PASSWORD" \
-                    --admin_email="$WP_ADMIN_EMAIL" \
+                    --admin_user="$WP_ROOT_USER" \
+                    --admin_password="$WP_ROOT_PASSWORD" \
+                    --admin_email="$WP_ROOT_EMAIL" \
                     --allow-root
     
     wp user create "$WP_USER_USER" "$WP_USER_EMAIL" \
@@ -27,6 +27,6 @@ if [ ! -f "wp-config.php" ]; then
                     --allow-root
 fi
 
-chown -R www-data:www-data /var/www/html
+chown -R www-data:www-data /var
 
 exec php-fpm8.2 -F
