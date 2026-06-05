@@ -38,10 +38,14 @@ services:
       - wp_data:/var/www/wordpress
     environment:
       WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_NAME: ${DB_DATABASE}
-      WORDPRESS_DB_USER: ${DB_USER}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USER: ${DB_USER}
+      DOMAIN_NAME: ${DOMAIN_NAME}
       WP_ROOT_USER: ${WP_ROOT_USER}
       WP_ROOT_EMAIL: ${WP_ROOT_EMAIL}
+      WP_USER: ${WP_USER}
+      WP_USER_EMAIL: ${WP_USER_EMAIL}
+      WP_USER_PASSWORD: ${WP_USER_PASSWORD}
     secrets:
       - db_password
       - wp_root_password

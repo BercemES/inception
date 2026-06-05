@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 DB_PASSWORD=$(cat /run/secrets/db_password)
 WP_ROOT_PASSWORD=$(cat /run/secrets/wp_root_password)
 
@@ -11,10 +13,10 @@ echo "Database ready!"
 
 if [ ! -f "wp-config.php" ]; then
     echo "Creating wp-config.php..."
-    wp config create --dbname="$DB_DATABASE" \
+    wp config create --dbname="$WORDPRESS_DB_NAME" \
                      --dbuser="$DB_USER" \
                      --dbpass="$DB_PASSWORD" \
-                     --dbhost="${WORDPRESS_DB_HOST}" \
+                     --dbhost="$WORDPRESS_DB_HOST" \
                      --allow-root --skip-check
     
     wp core install --url="$DOMAIN_NAME" \
@@ -30,6 +32,6 @@ if [ ! -f "wp-config.php" ]; then
                     --allow-root
 fi
 
-chown -R www-data:www-data /var
+chown -R www-data:www-data /var/www/wordpress
 
 exec php-fpm8.2 -F
