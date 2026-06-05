@@ -20,7 +20,10 @@ RUN chown -R www-data:www-data /var/www/wordpress
 
 WORKDIR /var/www/wordpress
 
-COPY ./tools/auto_config.sh /usr/local/bin/wp_setup.sh
+RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+    && chmod +x /usr/local/bin/wp
+
+COPY ./tools/create_wp.sh /usr/local/bin/wp_setup.sh
 RUN chmod +x /usr/local/bin/wp_setup.sh
 
 

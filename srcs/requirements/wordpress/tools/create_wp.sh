@@ -1,5 +1,8 @@
 #!/bin/bash
 
+DB_PASSWORD=$(cat /run/secrets/db_password)
+WP_ROOT_PASSWORD=$(cat /run/secrets/wp_root_password)
+
 echo "Waiting Database to ready..."
 until mariadb-admin ping -h mariadb -u $DB_USER --password=$DB_PASSWORD --silent; do
     sleep 2
@@ -11,7 +14,7 @@ if [ ! -f "wp-config.php" ]; then
     wp config create --dbname="$DB_DATABASE" \
                      --dbuser="$DB_USER" \
                      --dbpass="$DB_PASSWORD" \
-                     --dbhost="$DB_HOST" \
+                     --dbhost="${WORDPRESS_DB_HOST}" \
                      --allow-root --skip-check
     
     wp core install --url="$DOMAIN_NAME" \
