@@ -13,7 +13,7 @@ echo "Database ready!"
 
 if [ ! -f "wp-config.php" ]; then
     echo "Creating wp-config.php..."
-    wp config create --dbname="$$DB_DATABASE" \
+    wp config create --dbname="$DB_DATABASE" \
                      --dbuser="$DB_USER" \
                      --dbpass="$DB_PASSWORD" \
                      --dbhost="$WORDPRESS_DB_HOST" \

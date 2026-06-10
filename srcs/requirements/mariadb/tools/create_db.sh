@@ -15,13 +15,15 @@ until mysqladmin ping --silent; do
 	sleep 3
 done
 
-mysql -e "CREATE DATABASE IF NOT EXISTS \`${DB_DATABASE}\`;"
-mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';"
-mysql -e "CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';"
-mysql -e "GRANT ALL PRIVILEGES ON \`${DB_DATABASE}\`.* TO '${DB_USER}'@'%';"
-mysql -e "FLUSH PRIVILEGES;"
+mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';"
 
-mysqladmin shutdown
+mysql -u root -p"CREATE DATABASE IF NOT EXISTS \`${DB_DATABASE}\`;"
+mysql -u root -p"ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';"
+mysql -u root -p"CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';"
+mysql -u root -p"GRANT ALL PRIVILEGES ON \`${DB_DATABASE}\`.* TO '${DB_USER}'@'%';"
+mysql -u root -p"FLUSH PRIVILEGES;"
+
+mysqladmin -u root -p"${DB_ROOT_PASSWORD}" shutdown
 
 echo "starting MariaDB server..."
 

@@ -1,10 +1,20 @@
 FROM debian:bullseye
 
 RUN apt-get update && apt-get install -y \
+    lsb-release \
+    apt-transport-https \
+    ca-certificates \
+    wget \
+    gnupg2 \
+    curl \
+    && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
+    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
+    && apt-get update
+
+RUN apt-get install -y \
     php8.2-fpm \
     php8.2-mysql \
     mariadb-client \
-    curl \
     && rm -rf /var/lib/apt/lists/*
 
 COPY ./conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
