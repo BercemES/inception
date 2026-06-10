@@ -6,7 +6,8 @@ DB_PASSWORD=$(cat /run/secrets/db_password)
 WP_ROOT_PASSWORD=$(cat /run/secrets/wp_root_password)
 
 echo "Waiting Database to ready..."
-until mariadb-admin ping -h mariadb -u $DB_USER --password=$DB_PASSWORD --silent; do
+until mariadb -h mariadb -u "$DB_USER" --password="$DB_PASSWORD" -e "SELECT 1;" "$DB_DATABASE" > /dev/null 2>&1; do
+    echo "Waiting for database..."
     sleep 2
 done
 echo "Database ready!"
